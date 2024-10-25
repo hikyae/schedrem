@@ -1,0 +1,88 @@
+disabled: false  # This is optional, and the default is false.
+
+weekdaynames:  # This is optional, and the default is [mon, tue, wed, thu, fri, sat, sun].
+# NOTE: Lists start from Monday.
+  - [mon, tue, wed, thu, fri, sat, sun]
+  - [月, 火, 水, 木, 金, 土, 日]
+
+font: Arial 40  # This is optional, and the default is "Arial 19".
+
+aliases:  # This is optional, and the naming of the key `aliases` is not mandatory.
+  - &even_days [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+  - &friday13th
+    weekday: fri
+    day: 13
+
+schedules:
+  - description: Time to go
+    time:
+      weekday: [mon, tue, wed, thu, fri]
+      hour: 8
+      minute: 0
+    message: Go to work
+
+  - description: Time to take out the burnable trash on Monday
+    time:
+      hour: 7
+      minute: 50
+      weekday: 月
+    message: 燃えるゴミを捨てる
+
+  - description: Backup every Friday at 5 p.m. if you answer yes
+    time:
+      weekday: fri
+      hour: 17
+      minute: 0
+    yesno: Wanna backup?
+    command: echo 'your_favorite_backup_command'
+
+  - description: Do push-ups on even-numbered days
+    time:
+      day: *even_days
+      hour: 18
+      minute: 0
+    message: Do push-ups
+
+  # There are abbreviations for those keys:
+  # description - desc
+  # weekday - dow
+  # message - msg
+  # command - cmd
+  - desc: Beware of unluckiness in the morning
+    time:
+      hour: 8
+      minute: 0
+      <<: *friday13th
+    msg: Good morning, and beware!
+
+  - desc: Beware of unluckiness in the evening
+    time:
+      hour: 18
+      minute: 0
+      <<: *friday13th
+    msg: Good evening, and beware!
+
+  - desc: Say hello at 8 a.m. every day, starting on September 10, 2025.
+    time:
+      hour: 8
+      minute: 0
+    wait:
+      year: 2025
+      month: 9
+      day: 10
+    msg: hello
+
+  - desc: Wake up at 6 a.m. every day
+    time:
+      hour: 6
+      minute: 0
+    sound: true
+    msg: Wake up
+    font: Arial 50
+
+  - desc: WAKE UP
+    time:
+      hour: 6
+      minute: 30
+    sound: /path/to/noisy/song.wav
+    msg: WAKE UP

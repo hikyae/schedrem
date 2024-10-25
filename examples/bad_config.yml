@@ -1,0 +1,44 @@
+# The following is an example of a badly configured settings file,
+# so please read the NOTE and use it as a reference to avoid configuring it in this way.
+
+# NOTE: If you accidentally set "disabled" to true, this program won't trigger anything.
+disabled: true  # This is optional, and the default is false.
+
+weekdaynames:  # This is optional, and the default is ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'].
+# NOTE: Lists start from Monday, so 'sun' would be interpreted as Monday by Schedrem in this example.
+  - ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+  - ['日', '月', '火', '水', '木', '金', '土']
+
+schedules:
+  # NOTE: schedules' value is a list of schedules,
+  # so writing keys without a hyphen (-) here would cause an error.
+  description: # bad key
+  time: # bad key
+    hour: 8 # bad key
+    minute: 0 # bad key
+  msg: bad key # bad key
+
+  - description: Backup every Friday at 5 p.m. if you answer yes
+    time:
+      weekday: fri
+      hour: 17
+      # NOTE: If you forget to set `minute`,
+      # it would be triggered every minute during the 5 p.m. hour.
+    yesno: Wanna backup?
+    command: echo 'your_favorite_backup_command'
+
+  - desc: Listen to Simon & Garfunkel
+    time:
+      hour: 22
+      minute: 0
+    # NOTE: If the sound path does not exist, the default sound would be played.
+    sound: /path/that/does/not/exist.wav
+    msg: Listen to the sound of silence
+
+  - desc: Wake up
+    time:
+      hour: 6
+      minute: 0
+    # NOTE: If the sound file's extension is not .wav, it would lead to an error.
+    sound: /path/to/very/loud/sound.mp3
+    msg: Listen to the sound of mayhem

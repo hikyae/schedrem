@@ -1,0 +1,81 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "schedrem"
+version = "1.0.0"
+authors = [
+  { name="hikyae", email="h1ky43@gmail.com" },
+]
+description = "A cross-platform task scheduler and reminder configured in YAML."
+readme = "README.md"
+requires-python = ">=3.11"
+keywords = [
+    "task",
+    "scheduler",
+    "reminder",
+    "YAML",
+    "tkinter",
+    "desktop",
+    "cross-platform"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Framework :: AsyncIO",
+    "Framework :: Pydantic :: 2",
+]
+dependencies = [
+    "psutil>=6.1.0",
+    "pyaudio>=0.2.14",
+    "pydantic>=2.9.1",
+    "PyYAML>=6.0.2",
+    "watchdog>=5.0.2"
+]
+
+[project.optional-dependencies]
+dev = [
+    "freezegun",
+    "pytest",
+    "ruff"
+]
+
+[project.gui-scripts]
+schedrem = "schedrem.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/hikyae/schedrem"
+Issues = "https://github.com/hikyae/schedrem/issues"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "FA102",    # future-required-type-annotation
+    "D102",     # undocumented-public-method
+    "D101",     # undocumented-public-class
+    "ANN001",   # missing-type-function-argument
+    "ANN206",   # missing-return-type-class-method
+    "D103",     # undocumented-public-function
+    "D107",     # undocumented-public-init
+    "BLE001",   # blind-except
+    "DTZ001",   # call-datetime-without-tzinfo
+    "DTZ005",   # call-datetime-now-without-tzinfo
+    "PERF203",  # try-except-in-loop
+    "D100",     # undocumented-public-module
+    "ANN201",   # missing-return-type-undocumented-public-function
+    "S602",     # subprocess-popen-with-shell-equals-true
+    "ASYNC220", # create-subprocess-in-async-function
+    "S603",     # subprocess-without-shell-equals-true
+    "S607",     # start-process-with-partial-path
+    "FBT003",   # boolean-positional-value-in-call
+    "D104",     # undocumented-public-package
+]
+
+[tool.ruff.lint.per-file-ignores]
+'tests/**/*.py' = [
+    'INP001',   # Test directories are not namespace packages
+    'S101',     # Pytest tests should use `assert`
+    'RUF018',   # Assignment expressions in assert are fine here
+]

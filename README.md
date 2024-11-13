@@ -18,13 +18,13 @@ Python 3.11 or later is required.
 
 ### From PyPI
 
-Install from PyPI using `pip`:
+Install from [PyPI](https://pypi.org/project/schedrem/) using `pip`:
 
 ```sh
 python -m pip install -U schedrem
 ```
 
-### From Source Using Pip
+### From Source Using pip
 
 ```sh
 git clone https://github.com/hikyae/schedrem
@@ -245,7 +245,7 @@ On Windows, you need to create a shortcut for the command:
 
 On macOS, you need to put a plist file as `~/Library/LaunchAgents/com.yourusername.schedrem.plist`:
 
-```plist
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">

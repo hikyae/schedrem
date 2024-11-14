@@ -62,7 +62,7 @@ The file format must be YAML. Use your favorite text editor to edit the file.
 
 Schedrem will automatically detect the changes you've made to the configuration file. If there is an error in the file, a message box will pop up and it will try to tell you the reason. Please fix the file and save it, then close the message box. Otherwise, the message box will keep popping up.
 
-Note that there is no configuration file used to configure defaults for **command-line parameters** such as `--config` or `--debug`.
+Note that there is no configuration file to set **command-line options** such as `--config` or `--debug`.
 
 ### Path Specified by Command-Line Parameter
 
@@ -115,7 +115,7 @@ schedules:
 
 The time specification is similar to cron, but more readable.
 
-Specify integers or a list of integers for `year`, `month`, `day`, `hour`, `minute` to schedule the date(s).
+Specify integers or a list of integers for `year`, `month`, `day`, `hour`, `minute` to schedule the date(s) and time(s).
 Specify string or a list of strings for `weekday` (abbreviated as `dow`) to schedule the day(s) of the week.
 
 If you omit any of them, then the schedule is triggered at any of the times within that range. This is similar to using `*` in a crontab.

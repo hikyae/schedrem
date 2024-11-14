@@ -113,7 +113,7 @@ schedules:
 
 ##### Time
 
-The time specification is similar to cron, but more readable.
+The time specification is inspired by cron, but is more readable and has some differences.
 
 Specify integers or a list of integers for `year`, `month`, `day`, `hour`, `minute` to schedule the date(s) and time(s).
 Specify string or a list of strings for `weekday` (abbreviated as `dow`) to schedule the day(s) of the week.
@@ -132,7 +132,7 @@ You can specify integers for `year`, `month`, `day`, `hour`, `minute`, but only 
 
 The "action" is a conceptual term, not a configuration file key. The configuration file consists of the following keys: `message` (abbreviated as `msg`), `yesno`, `command` (abbreviated as `cmd`), `sound`, and `font`.
 
-The structure of these keys is as follows:
+The detail of these keys is as follows:
 
 - `message`: A string to show in a message box with an OK button.
 - `yesno`: A string to show in a message box asking for a Yes or No response. If the user presses "Yes", the `command` will be executed.

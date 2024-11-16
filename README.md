@@ -211,7 +211,7 @@ schedules:
     msg: Good morning, and beware!
 ```
 
-# Usage
+## Usage
 
 First, you need to put your configuration file into one of the places described in the [Configuration](#configuration) section.
 
@@ -229,7 +229,7 @@ Set the config path if you put it besides the defaults:
 schedrem --config path/to/config
 ```
 
-## Auto-starting
+### Auto-starting
 
 On Linux, to start Schedrem as a background program in a stand-alone window manager, add the following line to your startup script, such as `~/.xinitrc`:
 

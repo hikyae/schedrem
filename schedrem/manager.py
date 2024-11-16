@@ -102,6 +102,8 @@ class ScheduleManager:
             if it should be triggered every minute.
             It means the same as * * * * * in crontab.
             """
+            if not self.sconf.enabled:
+                return
             nexttime = self.nearest_future(self.sconf.time)
             if not nexttime:
                 return

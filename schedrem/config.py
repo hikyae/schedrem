@@ -21,10 +21,11 @@ class WaitConfig(BaseModel):
     @field_validator("month", "day", "hour", "minute", mode="after")
     @classmethod
     def validate_time(cls, v, info: ValidationInfo):
-        min_val = {"month": 1, "day": 1, "hour": 0, "minute": 0}[info.field_name]
-        max_val = {"month": 12, "day": 31, "hour": 23, "minute": 59}[info.field_name]
+        field_name = str(info.field_name)
+        min_val = {"month": 1, "day": 1, "hour": 0, "minute": 0}[field_name]
+        max_val = {"month": 12, "day": 31, "hour": 23, "minute": 59}[field_name]
         if v < min_val or v > max_val:
-            msg = f"{info.field_name} must be between {min_val} and {max_val}."
+            msg = f"{field_name} must be between {min_val} and {max_val}."
             raise ValueError(msg)
         return v
 
@@ -52,10 +53,11 @@ class TimeConfig(BaseModel):
     @field_validator("month", "day", "hour", "minute", mode="after")
     @classmethod
     def validate_time(cls, v, info: ValidationInfo):
-        min_val = {"month": 1, "day": 1, "hour": 0, "minute": 0}[info.field_name]
-        max_val = {"month": 12, "day": 31, "hour": 23, "minute": 59}[info.field_name]
+        field_name = str(info.field_name)
+        min_val = {"month": 1, "day": 1, "hour": 0, "minute": 0}[field_name]
+        max_val = {"month": 12, "day": 31, "hour": 23, "minute": 59}[field_name]
         if type(v) is list and any(w < min_val or w > max_val for w in v):
-            msg = f"{info.field_name} must be between {min_val} and {max_val}."
+            msg = f"{field_name} must be between {min_val} and {max_val}."
             raise ValueError(msg)
         return v
 
@@ -77,6 +79,7 @@ class ScheduleConfig(BaseModel):
     )
     time: TimeConfig = TimeConfig()
     wait: WaitConfig | None = None
+    enabled: bool = True
     yesno: str | None = None
     command: str | None = Field(
         default=None,

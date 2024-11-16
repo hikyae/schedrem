@@ -97,19 +97,23 @@ Please refer to the [examples](https://github.com/hikyae/schedrem/tree/main/exam
 All the schedules should be listed here.
 
 Each schedule is an item in the list of `schedules`, denoted by a leading hyphen (-).
-It can have `description` (abbreviated as `desc`), `time`, `wait`, and an action that consists of `message` (abbreviated as `msg`), `yesno`, `command` (abbreviated as `cmd`), `sound`, and `font`.
+It can have `description` (abbreviated as `desc`), `time`, `wait`, `enabled`, and an action that consists of `message` (abbreviated as `msg`), `yesno`, `command` (abbreviated as `cmd`), `sound`, and `font`.
 Basically, every key is optional with a few exceptions. If there is no action specified out of `message`, `yesno`, or `command`, an error occurs.
 
 ```yaml
 schedules:
-  - message: This is the simplest schedule that is triggered every minute.
+  - message: This is the simplest schedule. This message is shown every minute.
 
-  - description: This is a more complex schedule that is triggered every day at 6 o'clock.
+  - description: The message "Good morning" is shown every day at 6 o'clock.
     time:
       hour: 6
       minute: 0
     message: Good morning.
 ```
+
+##### Description
+
+A string to describe the schedule.
 
 ##### Time
 
@@ -118,7 +122,7 @@ The time specification is inspired by cron, but is more readable and has some di
 Specify integers or a list of integers for `year`, `month`, `day`, `hour`, `minute` to schedule the date(s) and time(s).
 Specify string or a list of strings for `weekday` (abbreviated as `dow`) to schedule the day(s) of the week.
 
-If you omit any of them, then the schedule is triggered at any of the times within that range. This is similar to using `*` in a crontab.
+If you omit any of them, then the task is triggered at any of the times within that range. This is similar to using `*` in a crontab.
 
 If you don't specify the time, then the task is triggered every minute.
 
@@ -127,6 +131,12 @@ If you don't specify the time, then the task is triggered every minute.
 The time to wait before triggering the task. The task won't be triggered until the specified time has elapsed.
 
 You can specify integers for `year`, `month`, `day`, `hour`, `minute`, but only `year` is mandatory.
+
+##### Enabled
+
+A boolean (`true`/`false`, `yes`/`no`, `on`/`off`) to set whether the task should be triggered or not. The default value is `true`.
+
+Useful when you toggle multiple schedules with a single flag using an anchor in YAML.
 
 ##### Action
 

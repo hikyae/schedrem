@@ -12,6 +12,7 @@ aliases:  # This is optional, and the naming of the key `aliases` is not mandato
   - &friday13th
     weekday: fri
     day: 13
+  - &drinking true
 
 schedules:
   - description: Time to go
@@ -86,3 +87,10 @@ schedules:
       minute: 30
     sound: /path/to/noisy/song.wav
     msg: WAKE UP
+
+  - desc: Hangover prevention
+    time:
+      hour: 21
+      minute: 0
+    msg: Drink lots of water
+    enabled: *drinking

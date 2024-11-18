@@ -41,12 +41,13 @@ def main() -> None:
     if args.action:
         try:
             action = ActionConfig(**json.loads(args.action))
-            take_action(action)
+            status = take_action(action)
         except Exception as e:
             msg = f"{e.__class__.__name__}, {e}"
             m = Messenger()
             m.warning(msg)
-        sys.exit()
+            status = 1
+        sys.exit(status)
 
     if args.config:
         yaml_path = Path(args.config).resolve()

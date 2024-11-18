@@ -19,7 +19,7 @@ def program_dir() -> Path:
     return Path(__file__).resolve().parent
 
 
-def take_action(action: ActionConfig) -> None:
+def take_action(action: ActionConfig) -> int:
     if action.command and not action.yesno:
         subprocess.Popen(action.command, shell=True)
     yes = False
@@ -27,12 +27,15 @@ def take_action(action: ActionConfig) -> None:
         logging.debug("yesno: %s\n", action.yesno)
         m = Messenger(action.sound, action.font)
         yes = m.yesno(action.yesno)
-    if action.command and yes:
-        subprocess.Popen(action.command, shell=True)
+        if action.command and yes:
+            subprocess.Popen(action.command, shell=True)
+        if not yes:
+            return 1
     if action.message:
         logging.debug("message: %s\n", action.message)
         m = Messenger(action.sound, action.font)
         m.message(action.message)
+    return 0
 
 
 class Messenger:

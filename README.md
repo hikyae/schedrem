@@ -275,10 +275,11 @@ On macOS, you need to put a plist file as `~/Library/LaunchAgents/com.youruserna
 ## Tips
 
 - There is a command-line option `--action` that can receive a JSON string as an action.
-This option is used internally for executing tasks. You can also manually execute it as a command.
+Though this option is used internally for executing tasks, you can also manually execute it as a command. Answering "No" to yesno prompt lets the command exit with the code 1.
 
 ```sh
 schedrem --action '{"msg":"test","sound":true}'
+schedrem --action '{"yesno":"yes?","cmd":"echo yes"}'; echo $?
 ```
 
 - Unlike cron, you can configure the time with constraints on both the day of the month **and** the day of the week.

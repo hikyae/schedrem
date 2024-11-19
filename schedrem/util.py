@@ -22,7 +22,6 @@ def program_dir() -> Path:
 def take_action(action: ActionConfig) -> int:
     if action.command and not action.yesno:
         subprocess.Popen(action.command, shell=True)
-    yes = False
     if action.yesno:
         logging.debug("yesno: %s\n", action.yesno)
         m = Messenger(action.sound, action.font)
@@ -30,6 +29,7 @@ def take_action(action: ActionConfig) -> int:
         if action.command and yes:
             subprocess.Popen(action.command, shell=True)
         if not yes:
+            # action.message won't be shown if action.yesno gets "No" response
             return 1
     if action.message:
         logging.debug("message: %s\n", action.message)

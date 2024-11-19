@@ -145,7 +145,7 @@ The "action" is a conceptual term, not a configuration file key. The configurati
 The detail of these keys is as follows:
 
 - `message`: A string to show in a message box with an OK button.
-- `yesno`: A string to show in a message box asking for a Yes or No response. If the user presses "Yes", the `command` will be executed.
+- `yesno`: A string to display in a message box asking for a Yes or No response. If the user selects "Yes", the `command` will be executed, and the `message` will be shown if they are specified. If "No" is selected, neither the `command` nor the `message` will be run.
 - `command`: A string of an arbitrary shell command.
 - `sound`: A string of the path to a sound file to play, or a boolean (`true`/`false`, `yes`/`no`, `on`/`off`) to set whether the default sound should be played while showing a message box. The only acceptable sound file format is WAV.
 - `font`: A string specifying the font family and font size to use in the message box, in the format `<font family> <font size>`, for example, "Cica 40".

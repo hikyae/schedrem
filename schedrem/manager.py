@@ -116,7 +116,7 @@ class ScheduleManager:
                 await asyncio.sleep(waittime)
                 while datetime.now() < nexttime:
                     """Adjust the gap between monotonic and real-time clocks
-                    if sleep time is not enough for nexttime.
+                    if waittime is not enough for nexttime.
                     """
                     await asyncio.sleep(0.1)
                 action_arg = self.sconf.model_dump_json(

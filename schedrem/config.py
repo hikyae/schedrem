@@ -87,16 +87,9 @@ class TimeConfig(BaseModel):
         return v
 
 
-class ScheduleConfig(BaseModel):
+class ActionConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    description: str = Field(
-        default="",
-        validation_alias=AliasChoices("description", "desc"),
-    )
-    time: TimeConfig = TimeConfig()
-    wait: WaitConfig | None = None
-    enabled: bool = True
     yesno: str | None = None
     command: str | None = Field(
         default=None,
@@ -120,11 +113,23 @@ class ScheduleConfig(BaseModel):
     @field_validator("sound")
     @classmethod
     def validate_sound(cls, v):
-        """Only WAV is accepted."""
+        """Accept WAV only."""
         if type(v) is str and not v.endswith(".wav"):
             msg = "The only accepted format for audio files is WAV."
             raise ValueError(msg)
         return v
+
+
+class ScheduleConfig(ActionConfig):
+    model_config = ConfigDict(extra="forbid")
+
+    description: str = Field(
+        default="",
+        validation_alias=AliasChoices("description", "desc"),
+    )
+    time: TimeConfig = TimeConfig()
+    wait: WaitConfig | None = None
+    enabled: bool = True
 
     @field_validator("time")
     @classmethod
@@ -177,19 +182,3 @@ class SchedremConfig(BaseModel):
             )
 
         return self
-
-
-class ActionConfig(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    yesno: str | None = None
-    command: str | None = Field(
-        default=None,
-        validation_alias=AliasChoices("command", "cmd"),
-    )
-    message: str | None = Field(
-        default=None,
-        validation_alias=AliasChoices("message", "msg"),
-    )
-    sound: str | bool | None = None
-    font: str | None = None

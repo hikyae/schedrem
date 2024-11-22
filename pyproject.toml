@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "schedrem"
-version = "1.2.0"
+version = "1.3.0"
 authors = [
   { name="hikyae", email="h1ky43@gmail.com" },
 ]

@@ -129,21 +129,12 @@ class Messenger:
         self.root.destroy()
 
 
-def error_message(errors: list[dict]) -> str:
+def error_message(errors: list) -> str:
     messages = []
     for error in errors:
         loc = ".".join([str(i) for i in error.get("loc", [])])
         msg = error.get("msg", "")
         ipt = error.get("input")
-        if type(ipt) is dict and ipt.get("weekdaynames"):
-            """SchedremConfig.validate_weekday() returns
-            the entire SchedremConfig object, even though
-            it only concerns TimeConfig.weekday and SchedremConfig.weekdaynames.
-            Consider removing the unnecessary information.
-            """
-            ipt = ipt.get("weekdaynames")
-        else:
-            ipt = str(ipt)
         message = f"{loc}\n{msg}\ninput: {ipt}"
         messages.append(message)
     return "\n".join(messages)

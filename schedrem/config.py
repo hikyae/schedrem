@@ -18,7 +18,7 @@ class WaitConfig(BaseModel):
     hour: int = 0
     minute: int = 0
 
-    @field_validator("month", "day", "hour", "minute", mode="after")
+    @field_validator("month", "day", "hour", "minute")
     @classmethod
     def validate_time(cls, v, info: ValidationInfo):
         field_name = str(info.field_name)
@@ -50,7 +50,7 @@ class TimeConfig(BaseModel):
             return [v]
         return v
 
-    @field_validator("month", "day", "hour", "minute", mode="after")
+    @field_validator("month", "day", "hour", "minute")
     @classmethod
     def validate_time(cls, v, info: ValidationInfo):
         field_name = str(info.field_name)
@@ -61,12 +61,29 @@ class TimeConfig(BaseModel):
             raise ValueError(msg)
         return v
 
-    @field_validator("weekday", mode="after")
+    @field_validator("weekday")
     @classmethod
     def lower_weekday(cls, v):
         """Weekday name matching is case insensitive."""
         if type(v) is list:
             return [w.lower() for w in v]
+        return v
+
+    @field_validator("weekday")
+    @classmethod
+    def weekday_in_weekdaynames(cls, v, info: ValidationInfo):
+        """Check weekday is in weekdaynames."""
+        if v is None or not info.context:
+            return v
+        wdn = info.context.get("weekdaynames")
+        idx = info.context.get("schedule_idx")
+        for w in v:
+            if all(w not in aweek for aweek in wdn):
+                msg = (
+                    f'weekday name "{w}" in schedules.{idx}'
+                    f" is not in weekdaynames {wdn}."
+                )
+                raise ValueError(msg)
         return v
 
 
@@ -109,6 +126,20 @@ class ScheduleConfig(BaseModel):
             raise ValueError(msg)
         return v
 
+    @field_validator("time")
+    @classmethod
+    def validate_weekday(cls, v, info: ValidationInfo):
+        """Let TimeConfig check weekday is in weekdaynames."""
+        if not info.context:
+            return v
+        wdn = info.context.get("weekdaynames")
+        idx = info.context.get("schedule_idx")
+        TimeConfig.model_validate(
+            dict(v),
+            context={"weekdaynames": wdn, "schedule_idx": idx},
+        )
+        return v
+
 
 class SchedremConfig(BaseModel):
     disabled: bool = False
@@ -116,7 +147,7 @@ class SchedremConfig(BaseModel):
     schedules: list[ScheduleConfig] = []
     font: str | None = None
 
-    @field_validator("weekdaynames", mode="after")
+    @field_validator("weekdaynames")
     @classmethod
     def lower_weekdaynames(cls, v):
         """Weekday name matching is case insensitive."""
@@ -138,15 +169,13 @@ class SchedremConfig(BaseModel):
 
     @model_validator(mode="after")
     def validate_weekday(self):
-        """Check that weekday is in weekdaynames."""
+        """Let TimeConfig in ScheduleConfig check weekday is in weekdaynames."""
         for i, schedule in enumerate(self.schedules):
-            weekday = schedule.time.weekday
-            if weekday is None or all(
-                any(w in aweek for aweek in self.weekdaynames) for w in weekday
-            ):
-                continue
-            msg = f'weekday name "{weekday}" in schedules.{i} is not in weekdaynames.'
-            raise ValueError(msg)
+            ScheduleConfig.model_validate(
+                dict(schedule),
+                context={"weekdaynames": self.weekdaynames, "schedule_idx": i},
+            )
+
         return self
 
 

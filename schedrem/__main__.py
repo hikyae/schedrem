@@ -1,4 +1,3 @@
-import argparse
 import json
 import logging
 import sys
@@ -9,27 +8,11 @@ from yaml import YAMLError
 
 from .config import ActionConfig
 from .manager import SchedremManager
-from .util import Messenger, error_message, get_config_file, take_action
+from .util import Messenger, error_message, get_args, get_config_file, take_action
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Task manager and reminder")
-    parser.add_argument(
-        "--config",
-        type=str,
-        help="Path to config file for schedules",
-    )
-    parser.add_argument(
-        "--debug",
-        action=argparse.BooleanOptionalAction,
-        help="Debug mode",
-    )
-    parser.add_argument(
-        "--action",
-        type=str,
-        help="JSON string to be executed as an action",
-    )
-    args = parser.parse_args()
+    args = get_args()
 
     logging.basicConfig(
         level=logging.DEBUG if args.debug else logging.WARNING,

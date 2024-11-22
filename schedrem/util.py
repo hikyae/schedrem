@@ -5,6 +5,7 @@ import subprocess
 import sys
 import threading
 import wave
+from argparse import ArgumentParser, BooleanOptionalAction, Namespace
 from pathlib import Path
 from tkinter import TclError, Tk, messagebox
 
@@ -138,6 +139,26 @@ def error_message(errors: list) -> str:
         message = f"{loc}\n{msg}\ninput: {ipt}"
         messages.append(message)
     return "\n".join(messages)
+
+
+def get_args() -> Namespace:
+    parser = ArgumentParser(description="Task manager and reminder")
+    parser.add_argument(
+        "--config",
+        type=str,
+        help="Path to config file for schedules",
+    )
+    parser.add_argument(
+        "--debug",
+        action=BooleanOptionalAction,
+        help="Debug mode",
+    )
+    parser.add_argument(
+        "--action",
+        type=str,
+        help="JSON string to be executed as an action",
+    )
+    return parser.parse_args()
 
 
 def get_config_file() -> Path:

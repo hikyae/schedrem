@@ -42,6 +42,10 @@ def main() -> None:
         try:
             action = ActionConfig(**json.loads(args.action))
             status = take_action(action)
+        except ValidationError as e:
+            m = Messenger()
+            m.warning(error_message(e.errors()))
+            status = 1
         except Exception as e:
             msg = f"{e.__class__.__name__}, {e}"
             m = Messenger()

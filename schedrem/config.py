@@ -114,7 +114,7 @@ class ActionConfig(BaseModel):
     @classmethod
     def validate_sound(cls, v):
         """Accept WAV only."""
-        if type(v) is str and not v.endswith(".wav"):
+        if type(v) is str and not v.lower().endswith(".wav"):
             msg = "The only accepted format for audio files is WAV."
             raise ValueError(msg)
         return v

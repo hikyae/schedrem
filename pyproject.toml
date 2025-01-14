@@ -71,6 +71,7 @@ ignore = [
     "S607",     # start-process-with-partial-path
     "FBT003",   # boolean-positional-value-in-call
     "D104",     # undocumented-public-package
+    "RUF021",   # parenthesize-chained-operators
 ]
 
 [tool.ruff.lint.per-file-ignores]

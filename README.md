@@ -49,7 +49,7 @@ paru -S schedrem
 #### From Source Using Makepkg
 
 ```sh
-git clone https://aur.archlinux.org/packages/schedrem
+git clone https://aur.archlinux.org/schedrem.git
 cd schedrem
 makepkg -si
 ```

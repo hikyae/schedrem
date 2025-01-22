@@ -3,6 +3,7 @@ import logging
 import sys
 from pathlib import Path
 
+import psutil
 from pydantic import ValidationError
 from yaml import YAMLError
 
@@ -48,6 +49,21 @@ def main() -> None:
             sys.exit(msg)
 
     logging.debug("config path: %s\n", yaml_path)
+
+    if (
+        len(
+            [
+                proc
+                for proc in psutil.process_iter(["name", "cmdline"])
+                if proc.info["name"] == "schedrem"
+                and "--action" not in proc.info["cmdline"]
+            ],
+        )
+        > 1
+    ):
+        msg = "Another SchedremManager is running. Program exits."
+        logging.debug(msg)
+        sys.exit(msg)
 
     while True:
         try:

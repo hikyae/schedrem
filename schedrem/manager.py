@@ -27,15 +27,15 @@ class SchedremManager:
         self.config = SchedremConfig(**self.load_yaml(yaml_path))
         if self.config.disabled:
             logging.debug("Schedrem is disabled.\n")
-            # kill all existing action processes when disabled
+            # terminate all existing action processes when disabled
             for process in psutil.process_iter(["name", "cmdline"]):
                 try:
                     name = process.info["name"]
                     cmdline = process.info["cmdline"]
-                    if name == "schedrem" and cmdline and "--action" in cmdline:
+                    if name == "schedrem" and "--action" in cmdline:
                         process.terminate()
                 except Exception as e:
-                    logging.debug("Failed to kill process: %s", e)
+                    logging.debug("Failed to terminate process: %s", e)
 
         else:
             self.set_schedules()

@@ -275,7 +275,7 @@ On macOS, you need to put a plist file as `~/Library/LaunchAgents/com.youruserna
 ## Tips
 
 - There is a command-line option `--action` that can receive a JSON string as an action.
-Though this option is used internally for executing tasks, you can also manually execute it as a command. Answering "No" to yesno prompt lets the command exit with the code 1.
+Though this option is used internally for executing tasks, you can also manually execute it as a command. Answering "No" to yesno prompt lets the command exit with the code 1. If `command` is specified and executed, the command exits with its return code.
 
 ```sh
 schedrem --action '{"msg":"test","sound":true}'

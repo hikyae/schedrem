@@ -73,13 +73,13 @@ class SchedremManager:
     def run(self) -> None:
         logging.debug("weekdaynames: %s\n", self.config.weekdaynames)
 
-        async def crate_tasks() -> None:
+        async def create_tasks() -> None:
             async with asyncio.TaskGroup() as tg:
                 self.tasks = [tg.create_task(coro()) for coro in self.coros]
                 self.tasks.append(tg.create_task(self.cancel_awaiter()))
 
         self.observer.start()
-        asyncio.run(crate_tasks())
+        asyncio.run(create_tasks())
         logging.debug("Tasks have been cancelled!\n")
         self.observer.stop()
         self.observer.join()

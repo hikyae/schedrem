@@ -52,7 +52,7 @@ class SchedremManager:
     def week_num(self, weekday: str | list[str] | None) -> int | list[int] | None:
         """According to date.weekday(), monday is 0 and sunday is 6."""
         if type(weekday) is list:
-            return cast(list[int], [self.week_num(w) for w in weekday])
+            return cast("list[int]", [self.week_num(w) for w in weekday])
         for aweek in self.config.weekdaynames:
             for i, name in enumerate(aweek):
                 if weekday == name:
@@ -207,6 +207,6 @@ class SchedremEventHandler(FileSystemEventHandler):
             "modified",
             "moved",
             "deleted",
-        ] and self.is_yaml_path(event.src_path):
+        ] and self.is_yaml_path(str(event.src_path)):
             for task in self.app_manager.tasks:
                 task.cancel()

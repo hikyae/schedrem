@@ -19,28 +19,25 @@ from .util import (
 )
 
 
-def main() -> None:
-    args = get_args()
+def action_mode(action) -> None:
+    try:
+        action = ActionConfig(**json.loads(action))
+        status = take_action(action)
+    except ValidationError as e:
+        m = Messenger()
+        m.warning(error_message(e.errors()))
+        status = 1
+    except Exception as e:
+        msg = f"{e.__class__.__name__}, {e}"
+        m = Messenger()
+        m.warning(msg)
+        status = 1
+    sys.exit(status)
 
-    set_logger(args.debug)
 
-    if args.action:
-        try:
-            action = ActionConfig(**json.loads(args.action))
-            status = take_action(action)
-        except ValidationError as e:
-            m = Messenger()
-            m.warning(error_message(e.errors()))
-            status = 1
-        except Exception as e:
-            msg = f"{e.__class__.__name__}, {e}"
-            m = Messenger()
-            m.warning(msg)
-            status = 1
-        sys.exit(status)
-
-    if args.config:
-        yaml_path = Path(args.config).resolve()
+def manager_mode(config) -> None:
+    if config:
+        yaml_path = Path(config).resolve()
     else:
         try:
             yaml_path = get_config_file()
@@ -88,6 +85,17 @@ def main() -> None:
             m = Messenger()
             m.error(msg)
             sys.exit(msg)
+
+
+def main() -> None:
+    args = get_args()
+
+    set_logger(args.debug)
+
+    if args.action:
+        action_mode(args.action)
+    else:
+        manager_mode(args.config)
 
 
 if __name__ == "__main__":

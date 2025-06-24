@@ -76,10 +76,10 @@ class Messenger:
 
     def prepare_root(self) -> None:
         self.root = Tk()
+        self.root.withdraw()
         with contextlib.suppress(TclError):
             self.root.iconbitmap(str(self.icon))
         # make Tk blank window invisible
-        self.root.withdraw()
         self.root.attributes("-topmost", True)
         self.root.option_add("*Dialog.msg.font", self.font or "Arial 19")
         self.root.option_add("*Dialog.msg.wrapLength", "800p")

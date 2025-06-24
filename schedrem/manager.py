@@ -21,19 +21,23 @@ class SchedremManager:
         self.observer = Observer()
         self.observer.schedule(
             SchedremEventHandler(yaml_path, self),
-            yaml_path.resolve().parent,
+            str(yaml_path.resolve().parent),
             recursive=False,
         )
         self.config = SchedremConfig(**self.load_yaml(yaml_path))
         if self.config.disabled:
             logging.debug("Schedrem is disabled.\n")
             # terminate all existing action processes when disabled
-            for process in psutil.process_iter(["name", "cmdline"]):
+            for proc in psutil.process_iter(["name", "cmdline"]):
                 try:
-                    name = process.info["name"]
-                    cmdline = process.info["cmdline"]
-                    if name == "schedrem" and "--action" in cmdline:
-                        process.terminate()
+                    name = proc.info["name"]
+                    cmdline = proc.info["cmdline"]
+                    if (
+                        name == "schedrem"
+                        and cmdline is not None
+                        and "--action" in cmdline
+                    ):
+                        proc.terminate()
                 except Exception as e:
                     logging.debug("Failed to terminate process: %s", e)
 

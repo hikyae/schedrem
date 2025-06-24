@@ -65,7 +65,6 @@ def main() -> None:
         > 1
     ):
         msg = "Another SchedremManager is running. Program exits."
-        logging.debug(msg)
         sys.exit(msg)
 
     while True:

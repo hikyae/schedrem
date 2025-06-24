@@ -249,14 +249,18 @@ In a desktop environment (such as GNOME, KDE, Xfce, MATE, Cinnamon, etc.), you c
 On Windows, you need to create a shortcut for the command:
 
 1. Open the Startup Folder:
-   - Press Win + R, type `shell:startup`, and press Enter.
+    - Press Win + R, type `shell:startup`, and press Enter.
+
 2. Create a New Shortcut:
-   - Right-click inside the Startup folder, then select New > Shortcut.
+    - Right-click inside the Startup folder and select New > Shortcut.
+
 3. Enter the Shortcut Target:
-   - In the Location field, use PowerShell to run the command in hidden mode. Enter this command:
-     ```cmd
-     powershell -windowstyle hidden -command "schedrem"
-     ```
+    - In the location field, type `schedrem`. Its absolute path will be resolved automatically.
+    - Click **Next**.
+
+4. Name the Shortcut:
+    - Enter `schedrem` as the name.
+    - Click **Finish**.
 
 On macOS, you need to put a plist file as `~/Library/LaunchAgents/com.yourusername.schedrem.plist`:
 

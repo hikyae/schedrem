@@ -33,7 +33,7 @@ class SchedremManager:
                     name = proc.info["name"]
                     cmdline = proc.info["cmdline"]
                     if (
-                        name == "schedrem"
+                        name in ("schedrem", "schedrem.exe")
                         and cmdline is not None
                         and "--action" in cmdline
                     ):

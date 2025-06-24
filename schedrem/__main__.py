@@ -54,7 +54,7 @@ def manager_mode(config) -> None:
             [
                 proc
                 for proc in psutil.process_iter(["name", "cmdline"])
-                if proc.info["name"] == "schedrem"
+                if proc.info["name"] in ("schedrem", "schedrem.exe")
                 and proc.info["cmdline"] is not None
                 and "--action" not in proc.info["cmdline"]
             ],

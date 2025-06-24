@@ -20,6 +20,15 @@ def program_dir() -> Path:
     return Path(__file__).resolve().parent
 
 
+def set_logger(debug: bool) -> None:
+    logging.basicConfig(
+        level=logging.DEBUG if debug else logging.WARNING,
+        format="%(message)s",
+    )
+    logging.getLogger("asyncio").setLevel(logging.WARNING)
+    logging.getLogger("watchdog").setLevel(logging.WARNING)
+
+
 def take_action(action: ActionConfig) -> int:
     if action.command and not action.yesno:
         proc = subprocess.Popen(action.command, shell=True)

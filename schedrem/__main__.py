@@ -9,18 +9,20 @@ from yaml import YAMLError
 
 from .config import ActionConfig
 from .manager import SchedremManager
-from .util import Messenger, error_message, get_args, get_config_file, take_action
+from .util import (
+    Messenger,
+    error_message,
+    get_args,
+    get_config_file,
+    set_logger,
+    take_action,
+)
 
 
 def main() -> None:
     args = get_args()
 
-    logging.basicConfig(
-        level=logging.DEBUG if args.debug else logging.WARNING,
-        format="%(message)s",
-    )
-    logging.getLogger("asyncio").setLevel(logging.WARNING)
-    logging.getLogger("watchdog").setLevel(logging.WARNING)
+    set_logger(args.debug)
 
     if args.action:
         try:

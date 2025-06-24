@@ -5,7 +5,7 @@ import subprocess
 import sys
 import threading
 import wave
-from argparse import ArgumentParser, BooleanOptionalAction, Namespace
+from argparse import ArgumentParser, Namespace
 from pathlib import Path
 from tkinter import TclError, Tk, messagebox
 
@@ -153,7 +153,7 @@ def get_args() -> Namespace:
     )
     parser.add_argument(
         "--debug",
-        action=BooleanOptionalAction,
+        action="store_true",
         help="Debug mode",
     )
     parser.add_argument(

@@ -72,6 +72,8 @@ ignore = [
     "FBT003",   # boolean-positional-value-in-call
     "D104",     # undocumented-public-package
     "RUF021",   # parenthesize-chained-operators
+    "FBT001",   # boolean-type-hint-positional-argument
+    "LOG015",   # root-logger-call
 ]
 
 [tool.ruff.lint.per-file-ignores]

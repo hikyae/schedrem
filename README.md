@@ -148,7 +148,7 @@ The detail of these keys is as follows:
 - `yesno`: A string to display in a message box asking for a Yes or No response. If the user selects "Yes", the `command` will be executed, and the `message` will be shown if they are specified. If "No" is selected, neither the `command` nor the `message` will be run.
 - `command`: A string of an arbitrary shell command.
 - `sound`: A string of the path to a sound file to play, or a boolean (`true`/`false`, `yes`/`no`, `on`/`off`) to set whether the default sound should be played while showing a message box. The only acceptable sound file format is WAV.
-- `font`: A string specifying the font family and font size to use in the message box, in the format `<font family> <font size>`, for example, "Cica 40".
+- `font`: A string specifying the font family and font size to use in the message box, in the format `<font family> <font size>`, for example, "Cica 40". This option is currently not available on Windows.
 
 #### Optional global settings
 
@@ -176,7 +176,7 @@ These are optional settings that affect all schedules.
       message: 燃えるゴミを捨てる
   ```
 
-- `font`: A string specifying the font family and font size to use in the message box, in the format `<font family> <font size>`, for example, "Cica 40". If you set this value outside of `schedules`, each action will use this font setting unless the font is explicitly set within the action. The default value is `Arial 19`.
+- `font`: A string specifying the font family and font size to use in the message box, in the format `<font family> <font size>`, for example, "Cica 40". If you set this value outside of `schedules`, each action will use this font setting unless the font is explicitly set within the action. The default value is `Arial 19`. This option is currently not available on Windows.
 
   ```yaml
   font: Arial 70
@@ -219,6 +219,11 @@ Try starting Schedrem from a terminal to check for any errors:
 
 ```sh
 schedrem --debug
+```
+> [!WARNING]
+> On Windows, the installed `schedrem` command runs in the background and does not display any output in the command prompt. Instead, execute the following command to check the output from schedrem.
+```sh
+python -m schedrem --debug
 ```
 
 This starts Schedrem in the foreground with the debug option, displaying configuration information if there are no issues. If no errors appear, you're good to proceed. You can stop the process by pressing `<Ctrl>+C`.

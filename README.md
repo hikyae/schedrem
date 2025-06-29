@@ -290,6 +290,8 @@ Though this option is used internally for executing tasks, you can also manually
 schedrem --action '{"msg":"test","sound":true}'
 schedrem --action '{"yesno":"yes?","cmd":"echo yes"}'; echo $?
 schedrem --action '{"yesno":"Did you do push-ups?","msg":"Nice."}' || schedrem --action '{"msg":"Do it."}'
+# Snoozeable alarm example in a Unix shell
+while ! schedrem --action '{"yesno":"wake up","sound":true}'; do sleep 5m; done
 ```
 
 - Unlike cron, you can configure the time with constraints on both the day of the month **and** the day of the week.

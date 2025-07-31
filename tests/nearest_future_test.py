@@ -226,3 +226,20 @@ def test_case_16():
     sch = ScheduleConfig(**schedule)
     schman = ScheduleManager(sch, dummy_week_nums, None)
     assert schman.nearest_future(sch.time) == datetime(2025, 10, 3, 0, 0)
+
+
+@freeze_time(DUMMY_NOW)
+def test_case_17():
+    schedule = {
+        "time": {
+            "year": [],
+            "month": [],
+            "dow": ["mon", "金"],
+            "hour": [],
+            "minute": [3],
+        },
+        "message": "test",
+    }
+    sch = ScheduleConfig(**schedule)
+    schman = ScheduleManager(sch, dummy_week_nums, None)
+    assert schman.nearest_future(sch.time) == datetime(2024, 10, 28, 0, 3)

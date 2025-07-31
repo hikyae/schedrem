@@ -150,20 +150,20 @@ class ScheduleManager:
         else:
             candidate = now
 
-        if type(tconf.year) is list:
+        if tconf.year:
             if candidate.year > max(tconf.year):
                 return None
             if candidate.year not in tconf.year:
                 candidate = datetime(
                     min([y for y in tconf.year if y > candidate.year]),
-                    min(tconf.month) if type(tconf.month) is list else 1,
-                    min(tconf.day) if type(tconf.day) is list else 1,
+                    min(tconf.month) if tconf.month else 1,
+                    min(tconf.day) if tconf.day else 1,
                 )
 
         if (
-            type(tconf.month) is list
+            tconf.month
             and candidate.month not in tconf.month
-            or type(tconf.day) is list
+            or tconf.day
             and candidate.day not in tconf.day
         ):
             delta = {"days": 1}
@@ -171,19 +171,16 @@ class ScheduleManager:
                 candidate.year,
                 candidate.month,
                 candidate.day,
-                min(tconf.hour) if type(tconf.hour) is list else 0,
-                min(tconf.minute) if type(tconf.minute) is list else 0,
+                min(tconf.hour) if tconf.hour else 0,
+                min(tconf.minute) if tconf.minute else 0,
             )
         else:
             delta = {"minutes": 1}
 
         def time_match(candi: int, setting: list[int] | None) -> bool:
-            return setting is None or type(setting) is list and candi in setting
+            return not setting or candi in setting
 
-        while tconf.year is None or (
-            type(tconf.year) is list
-            and min(tconf.year) <= candidate.year <= max(tconf.year)
-        ):
+        while not tconf.year or min(tconf.year) <= candidate.year <= max(tconf.year):
             if (
                 time_match(candidate.year, tconf.year)
                 and time_match(candidate.month, tconf.month)

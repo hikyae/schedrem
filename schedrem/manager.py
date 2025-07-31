@@ -4,7 +4,6 @@ import subprocess
 from collections.abc import Callable
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import cast
 
 import psutil
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
@@ -49,19 +48,24 @@ class SchedremManager:
             return safe_load(file) or {}
         return {}
 
-    def week_num(self, weekday: str | list[str] | None) -> int | list[int] | None:
-        """According to date.weekday(), monday is 0 and sunday is 6."""
-        if type(weekday) is list:
-            return cast("list[int]", [self.week_num(w) for w in weekday])
-        for aweek in self.config.weekdaynames:
-            for i, name in enumerate(aweek):
-                if weekday == name:
-                    return i
-        return None
+    def week_nums(self, weekdays: list[str] | None) -> list[int] | None:
+        """Convert a list of weekday names to their corresponding weekday numbers.
+
+        According to date.weekday(), Monday is 0 and Sunday is 6.
+        """
+        if not weekdays:
+            return None
+
+        name_to_index: dict[str, int] = {
+            name: idx
+            for idx, names in enumerate(zip(*self.config.weekdaynames, strict=False))
+            for name in names
+        }
+        return [name_to_index[w] for w in weekdays if w in name_to_index]
 
     def set_schedules(self) -> None:
         self.sched_mans = [
-            ScheduleManager(sch, self.week_num, self.config.font)
+            ScheduleManager(sch, self.week_nums, self.config.font)
             for sch in self.config.schedules
         ]
         self.coros = [sched.standby for sched in self.sched_mans]
@@ -92,13 +96,13 @@ class SchedremManager:
 class ScheduleManager:
     def __init__(
         self,
-        config: ScheduleConfig,
-        week_num: Callable,
+        sconf: ScheduleConfig,
+        week_nums: Callable,
         font: str | None,
     ) -> None:
-        self.sconf = config
+        self.sconf = sconf
         self.sconf.font = self.sconf.font or font
-        self.week_num = week_num
+        self.week_nums = week_nums
 
     async def standby(self) -> None:
         while True:
@@ -186,7 +190,7 @@ class ScheduleManager:
                 and time_match(candidate.day, tconf.day)
                 and time_match(candidate.hour, tconf.hour)
                 and time_match(candidate.minute, tconf.minute)
-                and time_match(candidate.weekday(), self.week_num(tconf.weekday))
+                and time_match(candidate.weekday(), self.week_nums(tconf.weekday))
             ):
                 return candidate
             candidate += timedelta(**delta)

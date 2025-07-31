@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import cast
 
 from freezegun import freeze_time
 
@@ -13,22 +12,27 @@ DUMMY_WEEKDAYNAMES = [
 ]
 
 
-def dummy_week_num(weekday: str | list[str] | None) -> int | list[int] | None:
-    """According to date.weekday(), monday is 0 and sunday is 6."""
-    if type(weekday) is list:
-        return cast(list[int], [dummy_week_num(w) for w in weekday])
-    for aweek in DUMMY_WEEKDAYNAMES:
-        for i, name in enumerate(aweek):
-            if weekday == name:
-                return i
-    return None
+def dummy_week_nums(weekdays: list[str] | None) -> list[int] | None:
+    """Convert a list of weekday names to their corresponding weekday numbers.
+
+    According to date.weekday(), Monday is 0 and Sunday is 6.
+    """
+    if not weekdays:
+        return None
+
+    name_to_index: dict[str, int] = {
+        name: idx
+        for idx, names in enumerate(zip(*DUMMY_WEEKDAYNAMES, strict=False))
+        for name in names
+    }
+    return [name_to_index[w] for w in weekdays if w in name_to_index]
 
 
 @freeze_time(DUMMY_NOW)
 def test_case_1():
     schedule = {"time": {"hour": 1}, "message": "test"}
     sch = ScheduleConfig(**schedule)
-    schman = ScheduleManager(sch, dummy_week_num, None)
+    schman = ScheduleManager(sch, dummy_week_nums, None)
     assert schman.nearest_future(sch.time) == datetime(2024, 10, 28, 1, 0, 0)
 
 
@@ -40,7 +44,7 @@ def test_case_2():
         "wait": {"year": 2025, "month": 2},
     }
     sch = ScheduleConfig(**schedule)
-    schman = ScheduleManager(sch, dummy_week_num, None)
+    schman = ScheduleManager(sch, dummy_week_nums, None)
     assert schman.nearest_future(sch.time) == datetime(2025, 2, 1, 1, 0, 0)
 
 
@@ -51,7 +55,7 @@ def test_case_3():
         "message": "test",
     }
     sch = ScheduleConfig(**schedule)
-    schman = ScheduleManager(sch, dummy_week_num, None)
+    schman = ScheduleManager(sch, dummy_week_nums, None)
     assert schman.nearest_future(sch.time) == datetime(3000, 1, 1, 1, 5, 0)
 
 
@@ -62,7 +66,7 @@ def test_case_4():
         "message": "test",
     }
     sch = ScheduleConfig(**schedule)
-    schman = ScheduleManager(sch, dummy_week_num, None)
+    schman = ScheduleManager(sch, dummy_week_nums, None)
     assert schman.nearest_future(sch.time) == datetime(5000, 2, 1, 1, 5, 0)
 
 
@@ -80,7 +84,7 @@ def test_case_5():
         "message": "test",
     }
     sch = ScheduleConfig(**schedule)
-    schman = ScheduleManager(sch, dummy_week_num, None)
+    schman = ScheduleManager(sch, dummy_week_nums, None)
     assert schman.nearest_future(sch.time) is None
 
 
@@ -98,7 +102,7 @@ def test_case_6():
         "message": "test",
     }
     sch = ScheduleConfig(**schedule)
-    schman = ScheduleManager(sch, dummy_week_num, None)
+    schman = ScheduleManager(sch, dummy_week_nums, None)
     assert schman.nearest_future(sch.time) == datetime(5000, 2, 5, 1, 5)
 
 
@@ -115,7 +119,7 @@ def test_case_7():
         "message": "test",
     }
     sch = ScheduleConfig(**schedule)
-    schman = ScheduleManager(sch, dummy_week_num, None)
+    schman = ScheduleManager(sch, dummy_week_nums, None)
     assert schman.nearest_future(sch.time) == datetime(5000, 6, 13, 0, 0)
 
 
@@ -129,7 +133,7 @@ def test_case_8():
         "message": "test",
     }
     sch = ScheduleConfig(**schedule)
-    schman = ScheduleManager(sch, dummy_week_num, None)
+    schman = ScheduleManager(sch, dummy_week_nums, None)
     assert schman.nearest_future(sch.time) == datetime(2024, 12, 13, 0, 0)
 
 
@@ -140,7 +144,7 @@ def test_case_9():
         "message": "test",
     }
     sch = ScheduleConfig(**schedule)
-    schman = ScheduleManager(sch, dummy_week_num, None)
+    schman = ScheduleManager(sch, dummy_week_nums, None)
     assert schman.nearest_future(sch.time) == datetime(2024, 10, 28, 0, 1)
 
 
@@ -151,7 +155,7 @@ def test_case_10():
         "message": "test",
     }
     sch = ScheduleConfig(**schedule)
-    schman = ScheduleManager(sch, dummy_week_num, None)
+    schman = ScheduleManager(sch, dummy_week_nums, None)
     assert schman.nearest_future(sch.time) == datetime(2024, 10, 28, 0, 1)
 
 
@@ -163,7 +167,7 @@ def test_case_11():
         "wait": {"year": 2025, "month": 2},
     }
     sch = ScheduleConfig(**schedule)
-    schman = ScheduleManager(sch, dummy_week_num, None)
+    schman = ScheduleManager(sch, dummy_week_nums, None)
     assert schman.nearest_future(sch.time) == datetime(2025, 2, 1, 0, 0)
 
 
@@ -175,7 +179,7 @@ def test_case_12():
         "wait": {"year": 2025, "month": 2},
     }
     sch = ScheduleConfig(**schedule)
-    schman = ScheduleManager(sch, dummy_week_num, None)
+    schman = ScheduleManager(sch, dummy_week_nums, None)
     assert schman.nearest_future(sch.time) == datetime(2025, 2, 5, 0, 3)
 
 
@@ -187,7 +191,7 @@ def test_case_13():
         "wait": {"year": 9999, "month": 2},
     }
     sch = ScheduleConfig(**schedule)
-    schman = ScheduleManager(sch, dummy_week_num, None)
+    schman = ScheduleManager(sch, dummy_week_nums, None)
     assert schman.nearest_future(sch.time) is None
 
 
@@ -198,7 +202,7 @@ def test_case_14():
         "message": "test",
     }
     sch = ScheduleConfig(**schedule)
-    schman = ScheduleManager(sch, dummy_week_num, None)
+    schman = ScheduleManager(sch, dummy_week_nums, None)
     assert schman.nearest_future(sch.time) is None
 
 
@@ -209,7 +213,7 @@ def test_case_15():
         "message": "test",
     }
     sch = ScheduleConfig(**schedule)
-    schman = ScheduleManager(sch, dummy_week_num, None)
+    schman = ScheduleManager(sch, dummy_week_nums, None)
     assert schman.nearest_future(sch.time) == datetime(2024, 10, 28, 0, 1)
 
 
@@ -220,5 +224,5 @@ def test_case_16():
         "message": "test",
     }
     sch = ScheduleConfig(**schedule)
-    schman = ScheduleManager(sch, dummy_week_num, None)
+    schman = ScheduleManager(sch, dummy_week_nums, None)
     assert schman.nearest_future(sch.time) == datetime(2025, 10, 3, 0, 0)

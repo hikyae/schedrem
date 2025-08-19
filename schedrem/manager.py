@@ -44,9 +44,8 @@ class SchedremManager:
             self.set_schedules()
 
     def load_yaml(self, yaml_path: Path) -> dict:
-        with yaml_path.open() as file:
+        with yaml_path.open(encoding="utf-8", errors="replace") as file:
             return safe_load(file) or {}
-        return {}
 
     def week_nums(self, weekdays: list[str] | None) -> list[int] | None:
         """Convert a list of weekday names to their corresponding weekday numbers.

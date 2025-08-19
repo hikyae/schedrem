@@ -58,7 +58,7 @@ makepkg -si
 
 Schedrem searches for the configuration file in the order specified below and uses the first one that is found. The actual path depends on the platform and environment variables.
 
-The file format must be YAML. Use your favorite text editor to edit the file.
+The file must be in YAML format. Edit it with your preferred text editor, and make sure it is encoded in UTF-8.
 
 Schedrem will automatically detect the changes you've made to the configuration file. If there is an error in the file, a message box will pop up and it will try to tell you the reason. Please fix the file and save it, then close the message box. Otherwise, the message box will keep popping up.
 

@@ -208,7 +208,7 @@ def get_config_file() -> Path:
         raise OSError(msg)
 
     for p in paths:
-        path = Path(os.path.expandvars(p))
+        path = Path(os.path.expandvars(p)).resolve()
         if path.exists():
             return path
 

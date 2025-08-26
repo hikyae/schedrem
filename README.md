@@ -97,7 +97,7 @@ Please refer to the [examples](https://github.com/hikyae/schedrem/tree/main/exam
 All the schedules should be listed here.
 
 Each schedule is an item in the list of `schedules`, denoted by a leading hyphen (-).
-It can have `description` (abbreviated as `desc`), `time`, `wait`, `enabled`, and an action that consists of `message` (abbreviated as `msg`), `yesno`, `command` (abbreviated as `cmd`), `sound`, and `font`.
+It can have `description` (abbreviated as `desc`), `time`, `wait`, `delay`, `enabled`, and an action that consists of `message` (abbreviated as `msg`), `yesno`, `command` (abbreviated as `cmd`), `sound`, and `font`.
 Basically, every key is optional with a few exceptions. If there is no action specified out of `message`, `yesno`, or `command`, an error occurs.
 
 ```yaml
@@ -131,6 +131,12 @@ If you don't specify the time, then the task is triggered every minute.
 The time to wait before triggering the task. The task won't be triggered until the specified time has elapsed.
 
 You can specify integers for `year`, `month`, `day`, `hour`, `minute`, but only `year` is mandatory.
+
+##### Delay
+
+Additional delay to be applied to each scheduled time. You can specify a float value in seconds. The default is `0.0`.
+
+This was implemented as a workaround to mitigate a bug in certain desktop environments where some message boxes fail to appear when multiple ones are created simultaneously.
 
 ##### Enabled
 

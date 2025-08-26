@@ -114,6 +114,7 @@ class ScheduleManager:
             nexttime = self.nearest_future(self.sconf.time)
             if not nexttime:
                 return
+            nexttime += timedelta(seconds=self.sconf.delay)
             waittime = (nexttime - datetime.now()).total_seconds()
             logging.debug(self.sconf)
             logging.debug(nexttime)

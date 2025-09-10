@@ -134,7 +134,7 @@ You can specify integers for `year`, `month`, `day`, `hour`, `minute`, but only 
 
 ##### Delay
 
-Additional delay to be applied to each scheduled time. You can specify a float value in seconds. The default is `0.0`.
+Additional delay to be applied to each scheduled time. You can specify a non-negative float value in seconds. The default is `0.0`.
 
 This was implemented as a workaround to mitigate a bug in certain desktop environments where some message boxes fail to appear when multiple ones are created simultaneously.
 

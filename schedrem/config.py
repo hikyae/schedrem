@@ -3,6 +3,7 @@ from pydantic import (
     BaseModel,
     ConfigDict,
     Field,
+    NonNegativeFloat,
     ValidationInfo,
     field_validator,
     model_validator,
@@ -130,7 +131,7 @@ class ScheduleConfig(ActionConfig):
     time: TimeConfig = TimeConfig()
     wait: WaitConfig | None = None
     # additional delay (in seconds) to be applied to each scheduled time
-    delay: float = 0.0
+    delay: NonNegativeFloat = 0.0
     enabled: bool = True
 
     @field_validator("time")

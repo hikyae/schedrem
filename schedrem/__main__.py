@@ -36,16 +36,13 @@ def action_mode(action) -> None:
 
 
 def manager_mode(config) -> None:
-    if config:
-        yaml_path = Path(config).resolve()
-    else:
-        try:
-            yaml_path = get_config_file()
-        except Exception as e:
-            msg = f"{e.__class__.__name__}, {e}\nProgram exits."
-            m = Messenger()
-            m.error(msg)
-            sys.exit(msg)
+    try:
+        yaml_path = Path(config).resolve() if config else get_config_file()
+    except Exception as e:
+        msg = f"{e.__class__.__name__}, {e}\nProgram exits."
+        m = Messenger()
+        m.error(msg)
+        sys.exit(msg)
 
     logging.debug("config path: %s\n", yaml_path)
 
@@ -85,6 +82,11 @@ def manager_mode(config) -> None:
             m = Messenger()
             m.error(msg)
             sys.exit(msg)
+        except Exception as e:
+            msg = f"{e.__class__.__name__}, {e}"
+            logging.debug(msg)
+            m = Messenger()
+            m.warning(msg)
 
 
 def main() -> None:

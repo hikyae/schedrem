@@ -10,6 +10,7 @@ authors = [
 ]
 description = "A cross-platform task scheduler and reminder configured in YAML."
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.11"
 keywords = [
     "task",
@@ -22,7 +23,6 @@ keywords = [
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Framework :: AsyncIO",
     "Framework :: Pydantic :: 2",

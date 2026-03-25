@@ -92,16 +92,22 @@ class Messenger:
             sampwidth = wf.getsampwidth()
             framerate = wf.getframerate()
             channels = wf.getnchannels()
-            frames = wf.readframes(wf.getnframes())
-        p = pyaudio.PyAudio()
-        while self.keep:
+            p = pyaudio.PyAudio()
             stream = p.open(
                 format=p.get_format_from_width(sampwidth),
                 channels=channels,
                 rate=framerate,
                 output=True,
             )
-            stream.write(frames)
+
+            chunk = 1024
+            while self.keep:
+                wf.rewind()
+                buffer = wf.readframes(chunk)
+                while self.keep and buffer:
+                    stream.write(buffer)
+                    buffer = wf.readframes(chunk)
+
             stream.stop_stream()
             stream.close()
         p.terminate()

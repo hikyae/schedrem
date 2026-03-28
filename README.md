@@ -279,7 +279,7 @@ On macOS, you need to put a plist file as `~/Library/LaunchAgents/com.youruserna
     <string>com.yourusername.schedrem</string>
     <key>ProgramArguments</key>
     <array>
-        <string>schedrem</string> <!-- Assuming "schedrem" is accessible via PATH -->
+        <string>/path/to/schedrem</string>
     </array>
     <key>RunAtLoad</key>
     <true/>

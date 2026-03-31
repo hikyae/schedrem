@@ -1,6 +1,6 @@
 [project]
 name = "schedrem"
-version = "1.5.3"
+version = "1.6.0"
 description = "A cross-platform task scheduler and reminder configured in YAML."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -24,6 +24,7 @@ classifiers = [
   "Programming Language :: Python :: 3",
 ]
 dependencies = [
+  "PySide6>=6.4.0",
   "PyYAML>=6.0.2",
   "psutil>=6.1.0",
   "pyaudio>=0.2.14",
@@ -70,6 +71,7 @@ ignore = [
   "RUF021",  # parenthesize-chained-operators
   "FBT001",  # boolean-type-hint-positional-argument
   "LOG015",  # root-logger-call
+  "N802",  # Function name `eventFilter` should be lowercase
 ]
 
 [tool.ruff.lint.per-file-ignores]

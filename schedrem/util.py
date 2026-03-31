@@ -1,4 +1,3 @@
-import contextlib
 import logging
 import os
 import subprocess
@@ -7,11 +6,11 @@ import threading
 import wave
 from argparse import ArgumentParser, Namespace
 from pathlib import Path
-from tkinter import TclError, Tk, messagebox
 
 import pyaudio
 
 from .config import ActionConfig
+from .messagebox import askyesno, showerror, showinfo, showwarning
 
 
 def program_dir() -> Path:
@@ -74,16 +73,6 @@ class Messenger:
         self.font = font
         self.keep: bool = True
 
-    def prepare_root(self) -> None:
-        self.root = Tk()
-        self.root.withdraw()
-        with contextlib.suppress(TclError):
-            self.root.iconbitmap(str(self.icon))
-        # make Tk blank window invisible
-        self.root.attributes("-topmost", True)
-        self.root.option_add("*Dialog.msg.font", self.font or "Arial 19")
-        self.root.option_add("*Dialog.msg.wrapLength", "800p")
-
     def sing(self) -> None:
         if self.sound_path is None:
             return
@@ -122,30 +111,22 @@ class Messenger:
         self.song_thread.join()
 
     def message(self, text: str) -> None:
-        self.prepare_root()
         self.start_singing()
-        messagebox.showinfo("schedrem", text)
+        showinfo("schedrem", text, self.font, self.icon)
         self.stop_singing()
-        self.root.destroy()
 
     def yesno(self, text: str) -> bool:
-        self.prepare_root()
         ans = False
         self.start_singing()
-        ans = messagebox.askyesno("schedrem", text)
+        ans = askyesno("schedrem", text, self.font, self.icon)
         self.stop_singing()
-        self.root.destroy()
         return ans
 
     def warning(self, text: str) -> None:
-        self.prepare_root()
-        messagebox.showwarning("schedrem", text)
-        self.root.destroy()
+        showwarning("schedrem", text, self.font, self.icon)
 
     def error(self, text: str) -> None:
-        self.prepare_root()
-        messagebox.showerror("schedrem", text)
-        self.root.destroy()
+        showerror("schedrem", text, self.font, self.icon)
 
 
 def error_message(errors: list) -> str:

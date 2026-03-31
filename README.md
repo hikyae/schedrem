@@ -12,6 +12,17 @@ The configuration file, which is a YAML file, is easy to read and write. You can
 
 Audible alarm using a sound file (currently WAV format only) is available.
 
+## Dependencies
+
+This project uses the following third-party libraries:
+
+- PySide6 — GNU Lesser General Public License v3.0 (LGPL-3.0)
+- PyYAML — MIT License
+- psutil — BSD 3-Clause License
+- PyAudio — MIT License
+- Pydantic — MIT License
+- watchdog — Apache License 2.0
+
 ## Installation
 
 Python 3.11 or later is required.
@@ -154,7 +165,7 @@ The detail of these keys is as follows:
 - `yesno`: A string to display in a message box asking for a Yes or No response. If the user selects "Yes", the `command` will be executed, and the `message` will be shown if they are specified. If "No" is selected, neither the `command` nor the `message` will be run.
 - `command`: A string of an arbitrary shell command.
 - `sound`: A string of the path to a sound file to play, or a boolean (`true`/`false`, `yes`/`no`, `on`/`off`) to set whether the default sound should be played while showing a message box. The only acceptable sound file format is WAV.
-- `font`: A string specifying the font family and font size to use in the message box, in the format `<font family> <font size>`, for example, "Cica 40". This option is currently not available on Windows.
+- `font`: A string specifying the font family and font size to use in the message box, in the format `<font family> <font size>`, for example, "Cica 40".
 
 #### Optional global settings
 

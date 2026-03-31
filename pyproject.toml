@@ -1,6 +1,6 @@
 [project]
 name = "schedrem"
-version = "1.6.0"
+version = "1.6.1"
 description = "A cross-platform task scheduler and reminder configured in YAML."
 readme = "README.md"
 requires-python = ">=3.11"

@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import subprocess
+import sys
 from collections.abc import Callable
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -86,10 +87,14 @@ class SchedremManager:
                 self.tasks.append(tg.create_task(self.cancel_awaiter()))
 
         self.observer.start()
-        asyncio.run(create_tasks())
-        logging.debug("Tasks have been cancelled!\n")
-        self.observer.stop()
-        self.observer.join()
+        try:
+            asyncio.run(create_tasks())
+        except KeyboardInterrupt:
+            sys.exit(130)
+        finally:
+            logging.debug("Tasks have been cancelled!\n")
+            self.observer.stop()
+            self.observer.join()
 
 
 class ScheduleManager:

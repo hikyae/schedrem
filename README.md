@@ -21,7 +21,7 @@ This project uses the following third-party libraries:
 - psutil — BSD 3-Clause License
 - PyAudio — MIT License
 - Pydantic — MIT License
-- watchdog — Apache License 2.0
+- Watchdog — Apache License 2.0
 
 ## Installation
 

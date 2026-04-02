@@ -18,13 +18,13 @@ class SchedremManager:
     def __init__(self, yaml_path: Path) -> None:
         self.coros: list = []
         self.tasks: list = []
+        self.config = SchedremConfig(**self.load_yaml(yaml_path))
         self.observer = Observer()
         self.observer.schedule(
             SchedremEventHandler(yaml_path, self),
             str(yaml_path.resolve().parent),
             recursive=False,
         )
-        self.config = SchedremConfig(**self.load_yaml(yaml_path))
         if self.config.disabled:
             logging.debug("Schedrem is disabled.\n")
             # terminate all existing action processes when disabled

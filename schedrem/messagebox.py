@@ -1,6 +1,21 @@
+#!/usr/bin/env python3
+import contextlib
+import ctypes
+import sys
+
 from PySide6.QtCore import QEvent, QObject, Qt, QTimer
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QMessageBox
+
+
+def set_app_user_model_id(app_id: str) -> None:
+    # Only on Windows
+    if sys.platform != "win32":
+        return
+
+    with contextlib.suppress(Exception):
+        # Fail silently on older Windows or unexpected env
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)
 
 
 class KeyBlocker(QObject):
@@ -70,14 +85,16 @@ class BlockingMessageBox(QMessageBox):
         return default
 
 
-def _app() -> QApplication:
-    QApplication.instance() or QApplication()
+def ensure_app(icon) -> None:
+    set_app_user_model_id("app.schedrem.messagebox")
+    app = QApplication.instance() or QApplication()
+    app.setWindowIcon(QIcon(str(icon)))
 
 
 def _show(
     icon, title, message, font, window_icon, buttons=QMessageBox.Ok
 ) -> BlockingMessageBox:
-    _app()
+    ensure_app(window_icon)
     return BlockingMessageBox(icon, title, message, font, window_icon, buttons).exec()
 
 

@@ -193,7 +193,7 @@ These are optional settings that affect all schedules.
       message: 燃えるゴミを捨てる
   ```
 
-- `font`: A string specifying the font family and font size to use in the message box, in the format `<font family> <font size>`, for example, "Cica 40". If you set this value outside of `schedules`, each action will use this font setting unless the font is explicitly set within the action. The default value is `Arial 19`. This option is currently not available on Windows.
+- `font`: A string specifying the font family and font size to use in the message box, in the format `<font family> <font size>`, for example, "Cica 40". If you set this value outside of `schedules`, each action will use this font setting unless the font is explicitly set within the action. The default value is `Arial 15`.
 
   ```yaml
   font: Arial 70

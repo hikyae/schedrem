@@ -5,7 +5,7 @@ weekdaynames:  # This is optional, and the default is [mon, tue, wed, thu, fri, 
   - [mon, tue, wed, thu, fri, sat, sun]
   - [月, 火, 水, 木, 金, 土, 日]
 
-font: Arial 40  # This is optional, and the default is "Arial 19".
+font: Arial 40  # This is optional, and the default is "Arial 15".
 
 aliases:  # This is optional, and the naming of the key `aliases` is not mandatory.
   - &even_days [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]

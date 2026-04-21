@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import contextlib
 import ctypes
 import sys

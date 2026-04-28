@@ -12,10 +12,9 @@ The configuration file, which is a YAML file, is easy to read and write. You can
 
 Audible alarm using a sound file (currently WAV format only) is available.
 
-## Dependencies
+## Requirements
 
-This project uses the following third-party libraries:
-
+- Python 3.11 or later
 - PySide6 — GNU Lesser General Public License v3.0 (LGPL-3.0)
 - PyYAML — MIT License
 - psutil — BSD 3-Clause License
@@ -24,8 +23,6 @@ This project uses the following third-party libraries:
 - Watchdog — Apache License 2.0
 
 ## Installation
-
-Python 3.11 or later is required.
 
 ### From PyPI
 

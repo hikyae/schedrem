@@ -78,6 +78,7 @@ class Messenger:
             return
         self.keep = True
         with wave.open(str(self.sound_path), "rb") as wf:
+            chunk = 1024
             sampwidth = wf.getsampwidth()
             framerate = wf.getframerate()
             channels = wf.getnchannels()
@@ -87,9 +88,9 @@ class Messenger:
                 channels=channels,
                 rate=framerate,
                 output=True,
+                frames_per_buffer=chunk,
             )
 
-            chunk = 1024
             while self.keep:
                 wf.rewind()
                 buffer = wf.readframes(chunk)

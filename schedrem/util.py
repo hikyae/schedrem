@@ -9,6 +9,7 @@ from pathlib import Path
 
 import pyaudio
 
+from . import __version__
 from .config import ActionConfig
 from .messagebox import askyesno, showerror, showinfo, showwarning
 
@@ -142,6 +143,11 @@ def error_message(errors: list) -> str:
 
 def get_args() -> Namespace:
     parser = ArgumentParser(description="Task manager and reminder")
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {__version__}",
+    )
     parser.add_argument(
         "--config",
         type=str,

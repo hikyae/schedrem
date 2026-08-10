@@ -7,8 +7,6 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 import psutil
-from watchdog.events import FileSystemEvent, FileSystemEventHandler
-from watchdog.observers import Observer
 from yaml import safe_load
 
 from .config import SchedremConfig, ScheduleConfig, TimeConfig
@@ -19,12 +17,8 @@ class SchedremManager:
         self.coros: list = []
         self.tasks: list = []
         self.config = SchedremConfig(**self.load_yaml(yaml_path))
-        self.observer = Observer()
-        self.observer.schedule(
-            SchedremEventHandler(yaml_path, self),
-            str(yaml_path.resolve().parent),
-            recursive=False,
-        )
+        self.yaml_path = yaml_path.resolve()
+        self.yaml_mtime = self.yaml_path.stat().st_mtime
         if self.config.disabled:
             logging.debug("Schedrem is disabled.\n")
             # terminate all existing action processes when disabled
@@ -70,13 +64,23 @@ class SchedremManager:
         ]
         self.coros = [sched.standby for sched in self.sched_mans]
 
-    async def cancel_awaiter(self) -> None:
-        """Just a sleep loop waiting for cancellation."""
+    async def watch_config(self) -> None:
+        """Cancel all tasks if the config file was modified."""
         while True:
+            await asyncio.sleep(1)
             try:
-                await asyncio.sleep(1)
-            except asyncio.CancelledError:
-                break
+                new_mtime = self.yaml_path.stat().st_mtime
+            except FileNotFoundError:
+                logging.debug("Config file not found.\n")
+                for task in self.tasks:
+                    task.cancel()
+                return
+            if new_mtime != self.yaml_mtime:
+                logging.debug("Config file was modified.\n")
+                self.yaml_mtime = new_mtime
+                for task in self.tasks:
+                    task.cancel()
+                return
 
     def run(self) -> None:
         logging.debug("weekdaynames: %s\n", self.config.weekdaynames)
@@ -84,17 +88,14 @@ class SchedremManager:
         async def create_tasks() -> None:
             async with asyncio.TaskGroup() as tg:
                 self.tasks = [tg.create_task(coro()) for coro in self.coros]
-                self.tasks.append(tg.create_task(self.cancel_awaiter()))
+                self.tasks.append(tg.create_task(self.watch_config()))
 
-        self.observer.start()
         try:
             asyncio.run(create_tasks())
         except KeyboardInterrupt:
             sys.exit(130)
         finally:
             logging.debug("Tasks have been cancelled!\n")
-            self.observer.stop()
-            self.observer.join()
 
 
 class ScheduleManager:
@@ -198,21 +199,3 @@ class ScheduleManager:
             candidate += timedelta(**delta)
 
         return None
-
-
-class SchedremEventHandler(FileSystemEventHandler):
-    def __init__(self, yaml_path: Path, app_manager: SchedremManager) -> None:
-        self.yaml_path = yaml_path
-        self.app_manager = app_manager
-
-    def is_yaml_path(self, path: str) -> bool:
-        return Path(path) == self.yaml_path
-
-    def on_any_event(self, event: FileSystemEvent) -> None:
-        if event.event_type in [
-            "modified",
-            "moved",
-            "deleted",
-        ] and self.is_yaml_path(str(event.src_path)):
-            for task in self.app_manager.tasks:
-                task.cancel()

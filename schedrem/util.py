@@ -25,7 +25,6 @@ def set_logger(debug: bool) -> None:
         format="%(message)s",
     )
     logging.getLogger("asyncio").setLevel(logging.WARNING)
-    logging.getLogger("watchdog").setLevel(logging.WARNING)
 
 
 def take_action(action: ActionConfig) -> int:

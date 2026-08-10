@@ -20,7 +20,6 @@ Audible alarm using a sound file (currently WAV format only) is available.
 - psutil — BSD 3-Clause License
 - PyAudio — MIT License
 - Pydantic — MIT License
-- Watchdog — Apache License 2.0
 
 ## Installation
 

@@ -71,6 +71,9 @@ ignore = [
   "FBT001",  # boolean-type-hint-positional-argument
   "LOG015",  # root-logger-call
   "N802",  # Function name `eventFilter` should be lowercase
+  "CPY001",  # Missing copyright notice at top of file
+  "PLR0913",  # Too many arguments in function definition (6 > 5)
+  "PLR0917",  # Too many positional arguments (6 > 5)
 ]
 
 [tool.ruff.lint.per-file-ignores]

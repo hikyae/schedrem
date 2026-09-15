@@ -27,13 +27,29 @@ class KeyBlocker(QObject):
             return False
 
         evtype = event.type()
+
         if evtype == QEvent.KeyPress and event.key() in (
             Qt.Key_Return,
             Qt.Key_Enter,
             Qt.Key_Escape,
             Qt.Key_Space,
+            Qt.Key_Y,
+            Qt.Key_N,
         ):
             return True
+
+        if (
+            evtype == QEvent.ShortcutOverride
+            and event.modifiers() & Qt.AltModifier
+            and event.key()
+            in (
+                Qt.Key_Y,
+                Qt.Key_N,
+            )
+        ):
+            event.accept()
+            return True
+
         return evtype == QEvent.MouseButtonPress
 
 
@@ -69,7 +85,7 @@ class BlockingMessageBox(QMessageBox):
         for btn in self.buttons():
             btn.installEventFilter(blocker)
 
-        QTimer.singleShot(500, lambda: setattr(self, "locked", False))
+        QTimer.singleShot(800, lambda: setattr(self, "locked", False))
 
         self.raise_()
         self.activateWindow()
@@ -91,7 +107,12 @@ def ensure_app(icon) -> None:
 
 
 def _show(
-    icon, title, message, font, window_icon, buttons=QMessageBox.Ok
+    icon,
+    title,
+    message,
+    font,
+    window_icon,
+    buttons=QMessageBox.Ok,
 ) -> BlockingMessageBox:
     ensure_app(window_icon)
     return BlockingMessageBox(icon, title, message, font, window_icon, buttons).exec()
@@ -110,13 +131,23 @@ def showinfo(title, message, font, window_icon):
 
 def showwarning(title, message, font, window_icon):
     _show(
-        QMessageBox.Warning, title, message, font, window_icon, buttons=QMessageBox.Ok
+        QMessageBox.Warning,
+        title,
+        message,
+        font,
+        window_icon,
+        buttons=QMessageBox.Ok,
     )
 
 
 def showerror(title, message, font, window_icon):
     _show(
-        QMessageBox.Critical, title, message, font, window_icon, buttons=QMessageBox.Ok
+        QMessageBox.Critical,
+        title,
+        message,
+        font,
+        window_icon,
+        buttons=QMessageBox.Ok,
     )
 
 

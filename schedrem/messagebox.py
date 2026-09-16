@@ -85,7 +85,7 @@ class BlockingMessageBox(QMessageBox):
         for btn in self.buttons():
             btn.installEventFilter(blocker)
 
-        QTimer.singleShot(800, lambda: setattr(self, "locked", False))
+        QTimer.singleShot(600, lambda: setattr(self, "locked", False))
 
         self.raise_()
         self.activateWindow()

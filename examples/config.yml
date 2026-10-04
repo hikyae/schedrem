@@ -1,4 +1,4 @@
-disabled: false  # This is optional, and the default is false.
+enabled: true  # This is optional, and the default is true.
 
 weekdaynames:  # This is optional, and the default is [mon, tue, wed, thu, fri, sat, sun].
 # NOTE: Lists start from Monday.

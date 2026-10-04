@@ -19,7 +19,7 @@ class SchedremManager:
         self.config = SchedremConfig(**self.load_yaml(yaml_path))
         self.yaml_path = yaml_path.resolve()
         self.yaml_mtime = self.yaml_path.stat().st_mtime
-        if self.config.disabled:
+        if not self.config.is_enabled:
             logging.debug("Schedrem is disabled.\n")
             # terminate all existing action processes when disabled
             for proc in psutil.process_iter(["name", "cmdline"]):
@@ -115,7 +115,7 @@ class ScheduleManager:
             if it should be triggered every minute.
             It means the same as * * * * * in crontab.
             """
-            if not self.sconf.enabled:
+            if not self.sconf.is_enabled:
                 return
             nexttime = self.nearest_future(self.sconf.time)
             if not nexttime:

@@ -132,7 +132,21 @@ class ScheduleConfig(ActionConfig):
     wait: WaitConfig | None = None
     # additional delay (in seconds) to be applied to each scheduled time
     delay: NonNegativeFloat = 0.0
-    enabled: bool = True
+    enabled: bool | None = None
+    disabled: bool | None = None
+
+    @model_validator(mode="after")
+    def validate_activation_flags(self):
+        """Require enabled and disabled to be mutually exclusive."""
+        if {"enabled", "disabled"}.issubset(self.model_fields_set):
+            msg = "enabled and disabled are mutually exclusive."
+            raise ValueError(msg)
+        return self
+
+    @property
+    def is_enabled(self) -> bool:
+        """Return whether this schedule should be triggered."""
+        return self.enabled if self.enabled is not None else not self.disabled
 
     @field_validator("time")
     @classmethod
@@ -150,10 +164,24 @@ class ScheduleConfig(ActionConfig):
 
 
 class SchedremConfig(BaseModel):
-    disabled: bool = False
+    enabled: bool | None = None
+    disabled: bool | None = None
     weekdaynames: list[list[str]] = [["mon", "tue", "wed", "thu", "fri", "sat", "sun"]]
     schedules: list[ScheduleConfig] = []
     font: str | None = None
+
+    @model_validator(mode="after")
+    def validate_activation_flags(self):
+        """Require enabled and disabled to be mutually exclusive."""
+        if {"enabled", "disabled"}.issubset(self.model_fields_set):
+            msg = "enabled and disabled are mutually exclusive."
+            raise ValueError(msg)
+        return self
+
+    @property
+    def is_enabled(self) -> bool:
+        """Return whether Schedrem should run."""
+        return self.enabled if self.enabled is not None else not self.disabled
 
     @field_validator("weekdaynames")
     @classmethod
@@ -180,7 +208,7 @@ class SchedremConfig(BaseModel):
         """Let TimeConfig in ScheduleConfig check weekday is in weekdaynames."""
         for i, schedule in enumerate(self.schedules):
             ScheduleConfig.model_validate(
-                dict(schedule),
+                schedule.model_dump(exclude_unset=True),
                 context={"weekdaynames": self.weekdaynames, "schedule_idx": i},
             )
 

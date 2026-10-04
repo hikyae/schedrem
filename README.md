@@ -104,7 +104,7 @@ Please refer to the [examples](https://github.com/hikyae/schedrem/tree/main/exam
 All the schedules should be listed here.
 
 Each schedule is an item in the list of `schedules`, denoted by a leading hyphen (-).
-It can have `description` (abbreviated as `desc`), `time`, `wait`, `delay`, `enabled`, and an action that consists of `message` (abbreviated as `msg`), `yesno`, `command` (abbreviated as `cmd`), `sound`, and `font`.
+It can have `description` (abbreviated as `desc`), `time`, `wait`, `delay`, `enabled` or `disabled`, and an action that consists of `message` (abbreviated as `msg`), `yesno`, `command` (abbreviated as `cmd`), `sound`, and `font`.
 Basically, every key is optional with a few exceptions. If there is no action specified out of `message`, `yesno`, or `command`, an error occurs.
 
 ```yaml
@@ -145,11 +145,17 @@ Additional delay to be applied to each scheduled time. You can specify a non-neg
 
 This was implemented as a workaround to mitigate a bug in certain desktop environments where some message boxes fail to appear when multiple ones are created simultaneously.
 
-##### Enabled
+##### Enabled / Disabled
 
-A boolean (`true`/`false`, `yes`/`no`, `on`/`off`) to set whether the task should be triggered or not. The default value is `true`.
+A boolean (`true`/`false`, `yes`/`no`, `on`/`off`) to set whether the task should be triggered or not. Specify either `enabled` or `disabled`, but not both. If neither is specified, the schedule is enabled by default.
 
 Useful when you toggle multiple schedules with a single flag using an anchor in YAML.
+
+```yaml
+schedules:
+  - disabled: true
+    message: This schedule will not be triggered.
+```
 
 ##### Action
 
@@ -167,7 +173,13 @@ The detail of these keys is as follows:
 
 These are optional settings that affect all schedules.
 
-- `disabled`: A boolean (`true`/`false`, `yes`/`no`, `on`/`off`) to set whether Schedrem should run or not. Set this to `true` when you want Schedrem to stop waiting for all schedules or when you want all running tasks, including all visible message boxes, to be killed. The default value is `false`.
+- `enabled` or `disabled`: A boolean (`true`/`false`, `yes`/`no`, `on`/`off`) to set whether Schedrem should run. Specify one of these keys, but not both. If neither is specified, Schedrem is enabled by default. Setting `enabled` to `false` or `disabled` to `true` stops waiting for all schedules and kills all running tasks, including visible message boxes.
+
+  ```yaml
+  enabled: false
+  ```
+
+  The equivalent setting using `disabled`:
 
   ```yaml
   disabled: true

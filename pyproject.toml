@@ -1,6 +1,6 @@
 [project]
 name = "schedrem"
-version = "1.7.3"
+dynamic = ["version"]
 description = "A cross-platform task scheduler and reminder configured in YAML."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -44,6 +44,9 @@ dev = ["freezegun", "pytest", "ruff"]
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "schedrem/__init__.py"
 
 [tool.ruff.lint]
 select = ["ALL"]
